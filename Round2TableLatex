@@ -1,0 +1,46 @@
+Substitutions & WNG, WNA, W2V & WNG:All, WNA:All, W2V:All & -0.67\% & -1.20\% & -1.80\% & -0.42\% \\
+\hline
+ &  & WNG:Bottom IDF WNA:Bottom IDF W2V:Bottom IDF	0.12\% & -1.09\% & -0.38\% & -0.17\% \\
+ \hline
+ &  & WNG:Noun, WNA:Noun, W2V:Noun & 0.19\% & -1.20\% & -2.04\% & -0.24\% \\
+ \hline
+ &  & WNG:Noun, WNA:Noun, W2V:Verb & -0.11\% & 0.41\% & 0.27\% & -0.56\% \\
+ \hline
+
+
+Term - Document & Is Early & Noun, Adj, Verb, Adv, & 0.53\% & 2.51\% & 3.57\% & -5.45\% \\
+\hline
+ &  & Noun, Verb & 1.65\% & 0.17\% & 3.22\% & -5.11\% \\
+ \hline
+ &  & Noun, Adj & 0.48\% & 3.31\% & 3.11\% & -4.18\% \\
+ \hline
+ &  & Verb, Adv & 1.22\% & -0.75\% & 0.11\% & 1.93\% \\
+ \hline
+
+
+Parts of Speech	Boost $\uparrow$, Boost $\downarrow$ & Noun:$\uparrow$, Adj:$\uparrow$, Verb:$\uparrow$, Adv:$\downarrow$ & 2.91\% & -0.27\% & 0.11\% & -1.28\% \\
+\hline
+ &  & Noun:$\uparrow$, Adj:$\downarrow$, Verb:$\uparrow$, Adv:$\downarrow$ & -1.62\% &	-0.14\% &	-0.41\% &	1.37\% \\
+ \hline
+ &  & Noun:$\uparrow$, Adj:$\uparrow$, Verb:$\downarrow$, Adv:$\downarrow$ & 2.92\% &	3.09\% &	-2.31\% &	0.89\% \\
+ \hline
+ &  & Noun:$\uparrow$, Adj:$\downarrow$, Verb:$\downarrow$, Adv:$\downarrow$ & -1.07\% &	2.65\% &	-2.87\% &	3.35\% \\
+ \hline
+ &  & Noun:$\uparrow$, Verb:$\uparrow$ & 1.93\% &	-0.37\% & 0.05\% & 0.40\% \\
+ \hline
+ &  & Noun:$\uparrow$, Verb:$\downarrow$ & 1.93\% & 1.54\% & -2.64\% & 2.30\% \\
+ \hline
+ &  & Noun:$\uparrow$, Adj:$\uparrow$ & 2.95\% & 0.39\% & -0.53\% & 2.07\% \\
+ \hline
+ &  & Noun:$\uparrow$, Adj:$\downarrow$ & -0.74\% & 0.18\% & -1.15\% & 3.45\% \\
+ \hline
+ &  & Verb:$\uparrow$, Adv:$\downarrow$ & -0.62\% &	1.90\% & 0.54\% & -2.29\% \\
+ \hline
+ &  & Verb:$\downarrow$, Adv:$\downarrow$ & 0.73\% & 2.90\% & -1.04\% & -1.39\% \\
+ \hline
+
+
+Term - Term & CP, B & CP:Adj-Noun B:All & -0.04\% & 1.32\% & -0.43\% & -1.29\% \\
+\hline
+ &  & CP:Adj-Noun B:Adj-Noun & -0.04\% & 1.32\% & -0.43\% & -1.29\% \\
+ \hline
