@@ -79,16 +79,24 @@ public class Main {
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
 
         IndexWriter w = new IndexWriter(index, config);
-        ArrayList<MyDocument> corpusDocs = getDocuments(lisa_notitle_path);
+
+
+//        ArrayList<MyDocument> corpusDocs = getDocuments(lisa_path, true);
+//        ArrayList<MyDocument> corpusDocs = getDocuments(lisa_path, false);
+//        ArrayList<MyDocument> corpusDocs = getDocuments(lisa_notitle_path, true);
+        ArrayList<MyDocument> corpusDocs = getDocuments(lisa_notitle_path, false);
+
+
         for (MyDocument doc: corpusDocs) {
             addDoc(w, doc);
         }
         w.close();
 
-        ArrayList<MyQuery> corpusQueries = getQueries(lisa_queries_path);
+//        ArrayList<MyQuery> corpusQueries = getQueries(lisa_queries_path, true);
+        ArrayList<MyQuery> corpusQueries = getQueries(lisa_queries_path, false);
 
 
-        IndexReader reader = DirectoryReader.open(index);;
+        IndexReader reader = DirectoryReader.open(index);
         // Execute every query
         for (MyQuery qu : corpusQueries) {
             // 2. query
@@ -119,12 +127,6 @@ public class Main {
         JSONObject jo = new JSONObject();
         jo.putAll(results);
         System.out.println(jo);
-//        for (Map.Entry<Integer, ArrayList<Integer>> entry : results.entrySet()) {
-//            Integer key = entry.getKey();
-//            ArrayList<Integer> value = entry.getValue();
-//            jo.
-//        }
-
 
         // reader can only be closed when there
         // is no need to access the documents any more.
@@ -140,11 +142,14 @@ public class Main {
     }
 
     /**
+     * If edit is true,
      * Convert everything to lower case
      * Remove stop words
      * Stem using Porter Stemmer.
+     *
+     * When edit is false, we make no edits to the document
      */
-    private ArrayList<MyDocument> getDocuments(String filePath) {
+    private ArrayList<MyDocument> getDocuments(String filePath, boolean edit) {
         int minWordLength = 2;
         ArrayList<MyDocument> docs = new ArrayList<>();
         StringBuilder body = new StringBuilder();
@@ -173,19 +178,26 @@ public class Main {
                 }
                 // If we are about to parse the text body
                 else if (insideW) {
-                    // Split into individual words
-                    String[] tokens = line.split("[^a-zA-Z,.]+");
-                    for (int i = 0; i < tokens.length; i++) {
-                        String term = tokens[i].toLowerCase();
-                        // Store words that are appropriate length
-                        if (term.length() >= minWordLength) {
-                            // If noise words are off and the current word is not a noise word
-                            if(!isNoiseWord(term)) {
-                                term = stem(term);
-                                body.append(term + " ");
-                                curDocIdx++;
+                    // Modify the document by converting words to lower case, stem, and remove stop words
+                    if (edit) {
+                        // Split into individual words
+                        String[] tokens = line.split("[^a-zA-Z,.]+");
+                        for (int i = 0; i < tokens.length; i++) {
+                            String term = tokens[i].toLowerCase();
+                            // Store words that are appropriate length
+                            if (term.length() >= minWordLength) {
+                                // If the current word is not a noise word
+                                if (!isNoiseWord(term)) {
+                                    term = stem(term);
+                                    body.append(term + " ");
+                                    curDocIdx++;
+                                }
                             }
                         }
+                    }
+                    // Edit is false, so we simply append the line to the body
+                    else {
+                        body.append(line + " ");
                     }
                 }
                 line = br.readLine();
@@ -200,8 +212,15 @@ public class Main {
     }
 
 
-
-    public ArrayList<MyQuery> getQueries(String filePath) {
+    /**
+     * If edit is true,
+     * Convert everything to lower case
+     * Remove stop words
+     * Stem using Porter Stemmer.
+     *
+     * When edit is false, we make no edits to the document
+     */
+    public ArrayList<MyQuery> getQueries(String filePath, boolean edit) {
         int minWordLength = 2;
         ArrayList<MyQuery> queries = new ArrayList<>();
         StringBuilder body = new StringBuilder();
@@ -228,18 +247,23 @@ public class Main {
                     curQuIdx = 0; // Reset for next query
                 }
                 else if (insideW) {
-                    String[] tokens = line.split("[^a-zA-Z,.]+");
-                    for (int i = 0; i < tokens.length; i++) {
-                        String term = tokens[i].toLowerCase();
-                        // Store words that are appropriate length
-                        if (term.length() >= minWordLength) {
-                            // If noise words are off and the current word is not a noise word
-                            if(!isNoiseWord(tokens[i])) {
-                                term = stem(term);
-                                body.append(term + " ");
-                                curQuIdx++;
+                    if (edit) {
+                        String[] tokens = line.split("[^a-zA-Z,.]+");
+                        for (int i = 0; i < tokens.length; i++) {
+                            String term = tokens[i].toLowerCase();
+                            // Store words that are appropriate length
+                            if (term.length() >= minWordLength) {
+                                // If noise words are off and the current word is not a noise word
+                                if (!isNoiseWord(tokens[i])) {
+                                    term = stem(term);
+                                    body.append(term + " ");
+                                    curQuIdx++;
+                                }
                             }
                         }
+                    }
+                    else {
+                        body.append(line + " ");
                     }
                 }
                 line = br.readLine();
